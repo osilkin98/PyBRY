@@ -1,5 +1,4 @@
 import requests
-import json
 
 
 def print_request(request):
