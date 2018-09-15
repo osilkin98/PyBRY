@@ -1,5 +1,9 @@
 # PyBRY, a Python API Wrapper for lbry & lbrycrd
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![Build: Passing](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
+
 PyBry is a wrapper for the [lbry daemon](https://github.com/lbryio/lbry) and 
 [lbrycrd daemon](https://github.com/lbryio/lbrycrd) API for Python 3.x
 

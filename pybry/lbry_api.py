@@ -1,6 +1,7 @@
 from pybry.base_api import BaseApi
 from pybry.addresses import LBRY_SERVER_ADDRESS
 
+
 class LbryApi(BaseApi):
 
     def __init__(self, timeout=600):
