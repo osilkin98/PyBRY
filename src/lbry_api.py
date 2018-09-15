@@ -1,6 +1,6 @@
 from src.base_api import BaseApi
 from src.addresses import LBRY_SERVER_ADDRESS
-
+import colorama
 
 class LbryApi(BaseApi):
 
