@@ -23,3 +23,18 @@
 '''
 
 
+class BaseApi(object):
+
+    request_id = 0
+
+    def __init__(self, credentials=None):
+        """ Initializes the BaseApi object.
+
+        :param list | tuple: This should be a list in the format ["username", "password"]. If None is used, then
+         the API will presume to use the non-authenticated API.
+        """
+
+        # Set the credentials for subsequent calls
+        self.credentials = [] if credentials is None else credentials
+
+
