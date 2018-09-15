@@ -18,16 +18,18 @@ def pretty_print_POST(request):
 
 class LBRYException(Exception):
 
-    def __init__(self, message, response, status):
+    def __init__(self, message, response, status_code, request):
         """
 
         :param str message: Message to Display
         :param dict response: JSON Response received from LBRY
-        :param int status: HTTP Status code
+        :param int status_code: HTTP Status code received from HTTP request
+        :param request.PreparedRequest request: PreparedRequest object which raised the exception
         """
 
         # Call the
         super().__init__(message)
 
         self.response = response
-        self.status = status
+        self.status_code = status_code
+        self.request = request
