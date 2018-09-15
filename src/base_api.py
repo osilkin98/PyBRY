@@ -1,4 +1,5 @@
 import requests
+import src.LBRYException as LBRYUtils
 
 '''
     What needs to be done is the following
@@ -56,8 +57,19 @@ class BaseApi(object):
                    "user-agent": "LBRY python3-api"}    # Sets the user agent
 
         try:
-            response = requests.post(url, data=str(data).format("'", '"'), headers=headers, auth=tuple(basic_auth))
+            # You could create a request object and then make a prepared request object
+            # And then be able to print the Request that will be sent
+            request = requests.Request('POST', url, json=data, headers=headers, auth=tuple(basic_auth))
 
+            prepared = request.prepare()
+
+            sesh = requests.Session()
+
+            response = sesh.send(prepared)
+
+            if 'error' in response:
+                raise LBRYUtils.LBRYException("POST Request made to LBRY received an error",
+                                              response.json(), response.status_code, prepared)
 
         except requests.HTTPError as HE:
             print(HE)
@@ -71,13 +83,3 @@ def pretty_print_POST(req):
     At this point it is completely built and ready
     to be fired; it is "prepared".
 
-    However pay attention at the formatting used in
-    this function because it is programmed to be pretty
-    printed and may differ from the actual request.
-    """
-    print('{}\n{}\n{}\n\n{}'.format(
-        '-----------START-----------',
-        req.method + ' ' + req.url,
-        '\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
-        req.body,
-    ))
