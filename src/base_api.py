@@ -44,9 +44,6 @@ class BaseApi(object):
         # Default parameters
         params = {} if params is None else params
 
-        # Default basic_auth to an empty list if it wasnt supplied
-        basic_auth = () if basic_auth is None else basic_auth
-
         # Increment the request ID
         cls.request_id += 1
 
@@ -58,7 +55,7 @@ class BaseApi(object):
 
         # You could create a request object and then make a prepared request object
         # And then be able to print the Request that will be sent
-        request = requests.Request('POST', url, json=data, headers=headers, auth=tuple(basic_auth))
+        request = requests.Request('POST', url, json=data, headers=headers, auth=basic_auth)
 
         prepared = request.prepare()
 
