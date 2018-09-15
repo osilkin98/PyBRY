@@ -1,7 +1,4 @@
-
-
-
-
+import requests
 
 '''
     What needs to be done is the following
@@ -27,7 +24,6 @@ class BaseApi(object):
 
     request_id = 0
 
-
     @classmethod
     def make_request(cls, url, method, params=None, basic_auth=None):
         """ Makes a cURL POST request to the given URL, specifying the data to be passed in as
@@ -36,24 +32,27 @@ class BaseApi(object):
         :param str url: URL to connect to.
         :param str method: The API method to call.
         :param dict params: Dictionary object of the parameters associated with the `method` given. None by default.
-        :param list basic_auth: List containing your username and password as ['username', 'password'].
+        :param list | tuple basic_auth: List containing your username and password as ['username', 'password'].
          This is empty by default, however it is required by all of the `lbrycrd` methods
         :return: A `dict` of the JSON result member of the request
         """
 
+        # Default parameters
+        params = {} if params is None else params
 
+        # Default basic_auth to an empty list if it wasnt supplied
+        basic_auth = () if basic_auth is None else basic_auth
 
+        # Increment the request ID
+        cls.request_id += 1
 
-    # I'm not sure if this is actually needed
-    def __init__(self, credentials=None):
-        """ Initializes the BaseApi object.
+        # This is the data to be sent
+        data = {"method": method,
+                "params": params,
+                "jsonrpc": "2.0",
+                "id": cls.request_id}
 
-        :param list | tuple: This should be a list in the format ["username", "password"]. If None is used, then
-         the API will presume to use the non-authenticated API.
-        """
+        headers = {"Content-Type": "application/json",  # sends the request as a json
+                   "user-agent": "LBRY python3-api"}    # Sets the user agent
 
-        # Set the credentials for subsequent calls
-        self.credentials = [] if credentials is None else credentials
-
-
-
+        requests.post(url, data=data, headers=headers, auth=tuple(basic_auth))
