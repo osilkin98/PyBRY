@@ -66,10 +66,16 @@ class BaseApi(object):
             sesh = requests.Session()
 
             # Send the prepared request object through
-            response = sesh.send(prepared)
+            response = sesh.send(prepared, timeout=timeout).json()
+
+            # Successful request was made
+            if 'result' in response.json():
+
+                # Returns the Result sub-JSON formatted as a dict
+                return response.json()['result']
 
             # If the response we received from the LBRY http post had an error
-            if 'error' in response:
+            elif 'error' in response.json():
                 raise LBRYUtils.LBRYException("POST Request made to LBRY received an error",
                                               response.json(), response.status_code, prepared)
 
@@ -81,7 +87,6 @@ class BaseApi(object):
             print(RE)
 
             print("Printing Request Created:\n")
-
 
             LBRYUtils.print_request(prepared)
 
