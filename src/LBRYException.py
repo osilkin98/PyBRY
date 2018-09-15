@@ -15,3 +15,16 @@ def pretty_print_POST(request):
     ))
 
 
+class LBRYException(Exception):
+
+    def __init__(self, message, response):
+        """
+
+        :param str message: Message to Display
+        :param dict response: JSON Response received from LBRY
+        """
+
+        # Call the
+        super().__init__(message)
+
+        self.response = response
