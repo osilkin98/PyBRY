@@ -78,5 +78,5 @@ class BaseApi(object):
 
             print("Printing Request Created:\n")
 
-            LBRYUtils.pretty_print_POST(prepared)
+            LBRYUtils.print_request(prepared)
 
