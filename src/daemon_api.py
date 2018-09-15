@@ -1,6 +1,7 @@
 import src.base_api as base_api
 from src.addresses import LBRY_SERVER_ADDRESS
 
+
 class DaemonApi(base_api.BaseApi):
 
     def __init__(self, timeout=600):
@@ -8,7 +9,6 @@ class DaemonApi(base_api.BaseApi):
         :param float timeout: The number of seconds to wait for a connection until we time out
         """
         self.timeout = timeout
-
 
     def call(self, method, params=None):
         """ Makes a Call to the LBRY API
