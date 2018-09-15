@@ -9,8 +9,8 @@ class DaemonApi(base_api.BaseApi):
         """
         self.timeout = timeout
 
-    @classmethod
-    def call(cls, method, params=None):
+
+    def call(self, method, params=None):
         """ Makes a Call to the LBRY API
 
         :param str method: Method to call from the LBRY API. See the full list of methods at
@@ -23,4 +23,4 @@ class DaemonApi(base_api.BaseApi):
 
         params = [] if params is None else params
 
-        return cls.make_request(LBRY_SERVER_ADDRESS, method, params)
+        return self.make_request(LBRY_SERVER_ADDRESS, method, params, timeout=self.timeout)
