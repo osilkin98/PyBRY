@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 def pretty_print_POST(request):
     """ Prints a prepared request to give the user info as to what they're sending
 
