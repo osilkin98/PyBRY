@@ -1,6 +1,5 @@
 from pybry.base_api import BaseApi
 from pybry.addresses import LBRY_SERVER_ADDRESS
-import colorama
 
 class LbryApi(BaseApi):
 
