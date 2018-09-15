@@ -27,6 +27,24 @@ class BaseApi(object):
 
     request_id = 0
 
+
+    @classmethod
+    def make_request(cls, url, method, params=None, basic_auth=None):
+        """ Makes a cURL POST request to the given URL, specifying the data to be passed in as
+         {"method": method, "params": parameters}
+
+        :param str url: URL to connect to.
+        :param str method: The API method to call.
+        :param dict params: Dictionary object of the parameters associated with the `method` given. None by default.
+        :param list basic_auth: List containing your username and password as ['username', 'password'].
+         This is empty by default, however it is required by all of the `lbrycrd` methods
+        :return: A `dict` of the JSON result member of the request
+        """
+
+
+
+
+    # I'm not sure if this is actually needed
     def __init__(self, credentials=None):
         """ Initializes the BaseApi object.
 
@@ -36,5 +54,6 @@ class BaseApi(object):
 
         # Set the credentials for subsequent calls
         self.credentials = [] if credentials is None else credentials
+
 
 
