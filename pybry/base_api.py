@@ -1,5 +1,5 @@
 import requests
-import src.LBRYException as LBRYUtils
+import pybry.LBRYException as LBRYUtils
 
 '''
     What needs to be done is the following

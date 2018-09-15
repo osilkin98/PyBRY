@@ -1,5 +1,5 @@
-from src.addresses import LBRYCRD_SERVER_ADDRESS
-from src.base_api import BaseApi
+from pybry.addresses import LBRYCRD_SERVER_ADDRESS
+from pybry.base_api import BaseApi
 
 
 class LbrycrdApi(BaseApi):

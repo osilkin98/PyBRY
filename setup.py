@@ -1,9 +1,11 @@
 from distutils.core import setup
 
+NAME = 'pybry'
+
 setup(
-    name='PyBRY',
+    name='pybry',
     version='1.0',
-    packages=['src',],
+    packages=[NAME,],
     license='MIT License',
     long_description=open('README.md', mode='r').read()
 )
