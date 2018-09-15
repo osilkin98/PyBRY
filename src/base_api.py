@@ -75,11 +75,10 @@ class BaseApi(object):
             print(HE)
 
         except requests.RequestException as RE:
-            print
+            # Print the Request Exception given
+            print(RE)
 
+            print("Printing Request Created:\n")
 
-def pretty_print_POST(req):
-    """
-    At this point it is completely built and ready
-    to be fired; it is "prepared".
+            LBRYUtils.pretty_print_POST(prepared)
 
