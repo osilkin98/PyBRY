@@ -54,17 +54,21 @@ class BaseApi(object):
         headers = {"Content-Type": "application/json-rpc",  # sends the request as a json
                    "user-agent": "LBRY python3-api"}    # Sets the user agent
 
+        # You could create a request object and then make a prepared request object
+        # And then be able to print the Request that will be sent
+        request = requests.Request('POST', url, json=data, headers=headers, auth=tuple(basic_auth))
+
+        prepared = request.prepare()
+
         try:
-            # You could create a request object and then make a prepared request object
-            # And then be able to print the Request that will be sent
-            request = requests.Request('POST', url, json=data, headers=headers, auth=tuple(basic_auth))
 
-            prepared = request.prepare()
-
+            # Create a session object
             sesh = requests.Session()
 
+            # Send the prepared request object through
             response = sesh.send(prepared)
 
+            # If the response we received from the LBRY http post had an error
             if 'error' in response:
                 raise LBRYUtils.LBRYException("POST Request made to LBRY received an error",
                                               response.json(), response.status_code, prepared)
@@ -77,6 +81,7 @@ class BaseApi(object):
             print(RE)
 
             print("Printing Request Created:\n")
+
 
             LBRYUtils.print_request(prepared)
 
