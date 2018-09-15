@@ -15,7 +15,6 @@ class LbrycrdApi(BaseApi):
         self.basic_auth = (username, password)
         self.timeout = timeout
 
-
     def call(self, method, params=None):
         """
 
