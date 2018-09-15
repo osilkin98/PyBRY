@@ -43,7 +43,7 @@ For Lbrycrd:
 from pybry import LbrycrdApi
 
 # Provide the username and password
-lbrycrd = LbrycrdApi(username="username", password="password")
+lbrycrd = LbrycrdApi("username", "password")
 
 # Just specify the method and the parameters
 response = lbrycrd.call("wallet_unlock", {"password", "wallet_password"})
