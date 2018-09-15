@@ -36,7 +36,9 @@ class BaseApi(object):
         :param list | tuple basic_auth: List containing your username and password as ['username', 'password'].
          This is empty by default, however it is required by all of the `lbrycrd` methods
         :param float timeout: Amount of seconds to wait for the server's response before we timeout.
+        :raises LBRYException: If the request returns an error when calling the API
         :return: A `dict` of the JSON result member of the request
+        :rtype: dict
         """
 
         # Default parameters
