@@ -57,3 +57,7 @@ class BaseApi(object):
 
         try:
             response = requests.post(url, data=str(data).format("'", '"'), headers=headers, auth=tuple(basic_auth))
+
+
+        except requests.HTTPError as HE:
+            print(HE)
