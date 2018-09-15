@@ -25,7 +25,7 @@ class BaseApi(object):
     request_id = 0
 
     @classmethod
-    def make_request(cls, url, method, params=None, basic_auth=None):
+    def make_request(cls, url, method, params=None, basic_auth=None, timeout=600):
         """ Makes a cURL POST request to the given URL, specifying the data to be passed in as
          {"method": method, "params": parameters}
 
@@ -34,6 +34,7 @@ class BaseApi(object):
         :param dict params: Dictionary object of the parameters associated with the `method` given. None by default.
         :param list | tuple basic_auth: List containing your username and password as ['username', 'password'].
          This is empty by default, however it is required by all of the `lbrycrd` methods
+        :param float timeout: Amount of seconds to wait for the server's response before we timeout.
         :return: A `dict` of the JSON result member of the request
         """
 
