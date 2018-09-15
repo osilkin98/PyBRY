@@ -53,6 +53,3 @@ response = lbrycrd.call("wallet_unlock", {"password", "wallet_password"})
 
 ```
 
-
-
-For the 
