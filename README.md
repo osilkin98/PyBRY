@@ -52,7 +52,3 @@ lbrycrd = LbrycrdApi("username", "password")
 response = lbrycrd.call("wallet_unlock", {"wallet_username", "wallet_password"})
 
 ```
-
-
-
-For the 
