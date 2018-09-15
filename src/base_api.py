@@ -55,4 +55,5 @@ class BaseApi(object):
         headers = {"Content-Type": "application/json-rpc",  # sends the request as a json
                    "user-agent": "LBRY python3-api"}    # Sets the user agent
 
-        requests.post(url, data=data, headers=headers, auth=tuple(basic_auth))
+        try:
+            response = requests.post(url, data=str(data).format("'", '"'), headers=headers, auth=tuple(basic_auth))
