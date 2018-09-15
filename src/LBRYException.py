@@ -18,14 +18,16 @@ def pretty_print_POST(request):
 
 class LBRYException(Exception):
 
-    def __init__(self, message, response):
+    def __init__(self, message, response, status):
         """
 
         :param str message: Message to Display
         :param dict response: JSON Response received from LBRY
+        :param int status: HTTP Status code
         """
 
         # Call the
         super().__init__(message)
 
         self.response = response
+        self.status = status
