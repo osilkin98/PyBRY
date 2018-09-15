@@ -1,8 +1,8 @@
-import src.base_api as base_api
+from src.base_api import BaseApi
 from src.addresses import LBRY_SERVER_ADDRESS
 
 
-class DaemonApi(base_api.BaseApi):
+class DaemonApi(BaseApi):
 
     def __init__(self, timeout=600):
         """
