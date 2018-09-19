@@ -38,7 +38,7 @@ class BaseApi(object):
         :param float timeout: Amount of seconds to wait for the server's response before we timeout.
         :raises LBRYException: If the request returns an error when calling the API
         :return: A `dict` of the JSON result member of the request
-        :rtype: dict
+        :rtype: dict, PreparedResponse
         """
 
         # Default parameters
@@ -65,21 +65,25 @@ class BaseApi(object):
             sesh = requests.Session()
 
             # Send the prepared request object through
-            response = sesh.send(prepared, timeout=timeout).json()
+            response = sesh.send(prepared, timeout=timeout)
+
+            response_json = response.json()
 
             # Successful request was made
-            if 'result' in response:
+            if 'result' in response_json:
 
                 # Returns the Result sub-JSON formatted as a dict
-                return response['result']
+                return response_json['result'], response
 
             # If the response we received from the LBRY http post had an error
-            elif 'error' in response:
+            elif 'error' in response_json:
                 raise LBRYUtils.LBRYException("POST Request made to LBRY received an error",
-                                              response.json(), response.status_code, prepared)
+                                              response_json, response.status_code, prepared)
 
         except requests.HTTPError as HE:
             print(HE)
+
+            return None, None
 
         except requests.RequestException as RE:
             # Print the Request Exception given
@@ -89,3 +93,4 @@ class BaseApi(object):
 
             LBRYUtils.print_request(prepared)
 
+            return None, None
