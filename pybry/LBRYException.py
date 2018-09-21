@@ -1,4 +1,3 @@
-import requests
 
 
 def print_request(request):
