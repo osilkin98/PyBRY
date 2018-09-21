@@ -5,7 +5,7 @@ NAME = 'pybry'
 setup(
     name='pybry',
     version='1.0',
-    packages=[NAME,],
+    packages=[NAME, ],
     license='MIT License',
     long_description=open('README.md', mode='r').read()
 )

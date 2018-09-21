@@ -48,7 +48,7 @@ class BaseApi(object):
         cls.request_id += 1
 
         # This is the data to be sent
-        data = {"method": method, "params": params,"jsonrpc": "2.0","id": cls.request_id}
+        data = {"method": method, "params": params, "jsonrpc": "2.0", "id": cls.request_id}
 
         headers = {"Content-Type": "application/json-rpc",  # sends the request as a json
                    "user-agent": "LBRY python3-api"}    # Sets the user agent
