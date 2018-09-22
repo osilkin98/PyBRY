@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build: Passing](https://img.shields.io/badge/build-passing-green.svg)]() 
-[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/osilkin98/CppBry.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/osilkin98/CppBry/context:cpp)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/b/osilkin98/pybry.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/b/osilkin98/pybry/context:python)
 
 PyBry is a wrapper for the [lbry daemon](https://github.com/lbryio/lbry) and 
 [lbrycrd daemon](https://github.com/lbryio/lbrycrd) API for Python 3.x
