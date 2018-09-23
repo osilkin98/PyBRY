@@ -12,7 +12,7 @@ class generate_lbryd(build_py):
 
 setup(
     name='pybry',
-    version='1.2',
+    version='1.2.1',
     packages=[NAME, ],
     license='MIT License',
     long_description=open('README.md', mode='r').read(),
