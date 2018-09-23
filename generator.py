@@ -31,3 +31,15 @@ def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
         print(E)
 
     return []
+
+
+# Currently this only supports LBRYD, as LBRYCRD's API is is nowhere to be found,
+# Therefore anyone wanting to use that needs to call the functions manually.
+def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL):
+    """ Generates the actual functions for lbryd_api.py based on lbry's documentation
+
+    :param str url: URL to the documentation we need to obtain,
+     pybry.constants.LBRY_API_RAW_JSON_URL by default
+     """
+    functions = get_lbry_api_function_docs(url)
+
