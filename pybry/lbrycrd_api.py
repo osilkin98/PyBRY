@@ -27,4 +27,4 @@ class LbrycrdApi(BaseApi):
         :rtype: dict
         """
 
-        return self.make_request(LBRYCRD_SERVER_ADDRESS, method, params, self.basic_auth, self.timeout)
+        return self.make_request(SERVER_ADDRESS, method, params, self.basic_auth, self.timeout)
