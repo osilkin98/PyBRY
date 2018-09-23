@@ -64,4 +64,6 @@ However the file itself cannot be used to generate working code due to to a coup
 documented [here](https://github.com/lbryio/lbry/pull/1469). 
 
 If you would like to use it so you can have
-proper function names and parameters for your code, you may do so. Simply run `setup.py `
+proper function names and parameters for your code, you may do so. Simply run 
+`$ python setup.py build_py` and then delete all instances of `<amount>` and `<file_name>` found in 
+your `lbry_api.py` file. Then you're done!

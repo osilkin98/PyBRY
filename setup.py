@@ -7,7 +7,7 @@ NAME = 'pybry'
 class generate_lbryd(build_py):
     def run(self):
         generate_lbryd_wrapper()
-        build_py.run()
+        build_py.run(self)
 
 
 setup(
