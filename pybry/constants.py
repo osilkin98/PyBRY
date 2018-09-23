@@ -17,3 +17,6 @@ DTYPE_MAPPING = {'list': list,
 
 # LBRYCRD documentation doesn't exist at least that I could find
 # LBRYCRD_API_RAW_JSON_URL = ""
+
+
+LBRYD_FPATH = "pybry/lbryd_api_test.py"
