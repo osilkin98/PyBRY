@@ -53,3 +53,15 @@ lbrycrd = LbrycrdApi("username", "password")
 response = lbrycrd.call("wallet_unlock", {"wallet_username", "wallet_password"})
 
 ```
+*Note: You have to have the `lbry-daemon` running in the background to use these, simply execute those and 
+you'll be able to make requests efficiently.
+
+## Future: Code Generation
+Code generation for `lbryd_api` is a feature that is ready to be implemented,
+ (in the [`generator.py`](generator.py) file).
+However the file itself cannot be used to generate working code due to to a couple of flaws in the actual
+[documentation file](https://github.com/lbryio/lbry/blob/master/docs/api.json) as 
+documented [here](https://github.com/lbryio/lbry/pull/1469). 
+
+If you would like to use it so you can have
+proper function names and parameters for your code, you may do so. Simply run `setup.py `
