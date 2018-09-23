@@ -47,6 +47,9 @@ class BaseApi(object):
         # Increment the request ID
         cls.request_id += 1
 
+        # Weed out all the None valued params
+        params = {k: v for (k, v) in params.items() if v is not None}
+
         # This is the data to be sent
         data = {"method": method, "params": params, "jsonrpc": "2.0", "id": cls.request_id}
 
