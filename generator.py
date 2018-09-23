@@ -51,55 +51,54 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, fpath=LBRYD_FPATH):
         for func in functions:
 
             # keep track of our indent level
-            indent = 1
+            indent = 4
 
             # initial definition
-            method_definition = ("\t"*indent) + "def " + func["name"]
+            method_definition = (" "*indent) + "def " + func["name"]
 
             # Here we just create a queue and put all the parameters
             # into the queue in the order that they were given,
-            params_required, params_optional = [], []
+            params_required = [param for param in func["arguments"] if param["is_required"]]
+            params_optional = [param for param in func["arguments"] if not param["is_required"]]
 
 
             # Open the parameter definitions
             method_definition += "(self, "
 
-            for param in func["arguments"]:
+            for param in params_required:
                 # Put the parameter into the queue
 
                 method_definition += param["name"]
+                method_definition += ", "
 
-                if param["is_required"]:
+            for param in params_optional:
 
-                    method_definition += ", "
-                    params_required.append(param)
+                method_definition += param["name"]
 
-                else:
-                    # Default methods not required
-                    method_definition += "=None, "
-                    params_optional.append(param)
+                # Default methods not required
+                method_definition += "=None, "
 
 
             # Peel off the final ", " and close off the parameter definition
             method_definition = method_definition.rstrip(", ") + "):\n"
 
-            indent += 1
+            indent += 4
 
             # re-indent
-            method_definition += "\t"*indent
+            method_definition += " "*indent
 
             # Begin with description.
 
             method_definition += '"""' + func["description"]
 
             # re-indent
-            method_definition += "\n" + "\t"*indent
+            method_definition += "\n\n" + " "*indent
 
             # Go through each parameter and insert description & type hint
             for param in params_required + params_optional:
 
                 # Add the type
-                method_definition += ":param " + DTYPE_MAPPING[param["type"]]
+                method_definition += ":param " + DTYPE_MAPPING[param["type"].lower()]
 
                 # Add the name
                 method_definition += " " + param["name"] + ": "
@@ -110,10 +109,32 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, fpath=LBRYD_FPATH):
                 # Add optionality & reindent
                 method_definition += "\n" if param["is_required"] else " (Optional)\n"
 
-                method_definition += "\t"*indent
+                method_definition += " "*indent
+
+            open_index = func["returns"].find('(')
+            close_index = func["returns"].find(')', (open_index if open_index > -1 else 0))
+
+            func["returns"] = func["returns"].replace("\t", " "*4)
+            return_string = func["returns"].replace("\n", "")
+
+
+            if open_index < close_index and func["returns"][open_index+1:close_index] in DTYPE_MAPPING:
+                method_definition += ":rtype: " + DTYPE_MAPPING[func["returns"][open_index+1:close_index]]
+
+                func["returns"] = func["returns"].replace(func["returns"][open_index:close_index+1], "")
+
+                method_definition += "\n" + " "*indent
+
+
+            method_definition += ":return: " + return_string
+
+            for i in range(0, len(return_string) + 1, 80 - (indent+2)):
+                method_definition += return_string[i:i+(80-(indent+2))] + "\n" + " "*indent
+
+
 
             # Close it off & reindent
-            method_definition += '"""' + "\n" + "\t"*indent
+            method_definition += '"""' + "\n" + " "*indent
 
             # Create the params map
             params_map = "__params_map = {"
@@ -134,12 +155,14 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, fpath=LBRYD_FPATH):
                     method_definition + " if " + param["name"] + "is not None else None"
 
                 # add commas or ending bracket if needed & reindent correctly
-                method_definition += ",\n" + "\t"*indent + ' '*params_indent if i + 1 < num_params else\
-                    "}\n" + "\t"*indent
+                method_definition += ",\n" + " "*indent + ' '*params_indent if i + 1 < num_params else ""
 
-            method_definition += '\n\n' + '\t'*indent
+            method_definition += '}\n\n' + ' '*indent
 
-            method_definition += "return self.make_request(LBRY"
+            method_definition += "return self.make_request(SERVER_ADDRESS, '" + func["name"] + "', " \
+                                 + params_map.rstrip(" = {") + ", timeout=self.timeout)\n\n"
 
+            # Write to file
+            lbry_file.write(method_definition)
 
 
