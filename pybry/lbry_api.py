@@ -1,5 +1,5 @@
 from pybry.base_api import BaseApi
-from pybry.addresses import LBRY_SERVER_ADDRESS
+from pybry.constants import LBRY_SERVER_ADDRESS
 
 
 class LbryApi(BaseApi):
