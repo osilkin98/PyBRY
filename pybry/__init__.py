@@ -1,4 +1,4 @@
-from .lbry_api import LbryApi
+from .lbryd_api import LbryApi
 from .lbrycrd_api import LbrycrdApi
 
 
