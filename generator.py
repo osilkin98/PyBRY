@@ -26,8 +26,8 @@ def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
         # If we get an exception, simply exit
     except URLError as UE:
         print(UE)
-        return []
 
     except Exception as E:
         print(E)
-        return []
+
+    return []
