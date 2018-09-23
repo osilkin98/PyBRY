@@ -4,19 +4,23 @@ from json import loads, dumps
 from pybry.constants import LBRY_API_RAW_JSON_URL
 
 
-def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL, timeout=None):
-
-    function_list = []
+def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
 
     try:
         # Grab the page content
-        docs_page = urlopen(url, timeout=timeout)
+        docs_page = urlopen(url)
 
-    # If we get an exception, simply exit
+        # Read the contents of the actual url we grabbed and decode them into UTF-8
+        contents = docs_page.read().decode("utf-8")
+
+        # Return the contents loaded as JSON
+        return loads(contents)
+
+        # If we get an exception, simply exit
     except URLError as UE:
         print(UE)
-        return
+        return None
 
-
-    # Read the contents of the actual url we grabbed and decode them into UTF-8
-    contents =
+    except Exception as E:
+        print(E)
+        return None
