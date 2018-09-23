@@ -1,4 +1,4 @@
-from pybry.constants import LBRYCRD_SERVER_ADDRESS
+from pybry.constants import LBRYCRD_SERVER_ADDRESS as SERVER_ADDRESS
 from pybry.base_api import BaseApi
 
 

@@ -139,7 +139,7 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, fpath=LBRYD_FPATH):
 
             method_definition += '\n\n' + '\t'*indent
 
-            method_definition += ""
+            method_definition += "return self.make_request(LBRY"
 
 
 

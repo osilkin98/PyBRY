@@ -1,5 +1,5 @@
 from pybry.base_api import BaseApi
-from pybry.constants import LBRY_SERVER_ADDRESS
+from pybry.constants import LBRYD_SERVER_ADDRESS as SERVER_ADDRESS
 
 
 class LbryApi(BaseApi):
@@ -25,4 +25,4 @@ class LbryApi(BaseApi):
 
         params = [] if params is None else params
 
-        return cls.make_request(LBRY_SERVER_ADDRESS, method, params, timeout=timeout)
+        return cls.make_request(SERVER_ADDRESS, method, params, timeout=timeout)
