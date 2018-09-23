@@ -1,7 +1,7 @@
 from urllib.request import urlopen
 from urllib.error import URLError
 from json import loads, dumps
-from pybry.constants import LBRY_API_RAW_JSON_URL
+from pybry.constants import LBRY_API_RAW_JSON_URL, DTYPE_MAPPING
 
 
 def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
