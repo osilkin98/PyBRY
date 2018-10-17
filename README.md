@@ -57,7 +57,7 @@ you'll be able to make requests efficiently.
 
 ## Future: Code Generation
 Code generation for `lbryd_api` is a feature that is ready to be implemented,
- (in the [`generator.py`](generator.py) file).
+ (in the [`generator.py`](pybry/generator.py) file).
 However the file itself cannot be used to generate working code due to to a couple of flaws in the actual
 [documentation file](https://github.com/lbryio/lbry/blob/master/docs/api.json) as 
 documented [here](https://github.com/lbryio/lbry/pull/1469). 
