@@ -4,6 +4,7 @@ from generator import generate_lbryd_wrapper
 
 NAME = 'pybry'
 
+
 class generate_lbryd(build_py):
     def run(self):
         generate_lbryd_wrapper()
@@ -16,6 +17,7 @@ setup(
     packages=[NAME, ],
     license='MIT License',
     long_description=open('README.md', mode='r').read(),
+    python_requires='>=3',
     cmdclass={'build_py': generate_lbryd}
 
 )
