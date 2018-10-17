@@ -26,3 +26,4 @@ class LbryApi(BaseApi):
         params = [] if params is None else params
 
         return cls.make_request(SERVER_ADDRESS, method, params, timeout=timeout)
+
