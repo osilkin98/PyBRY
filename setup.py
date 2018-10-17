@@ -23,7 +23,7 @@ setup(
     url='https://github.com/osilkin98/pybry',
     author='Oleg Silkin',
     author_email='o.silkin98@gmail.com',
-    version='1.3.8',
+    version='1.3.9',
     packages=[NAME, ],
     license='MIT License',
     long_description=long_description,

@@ -9,6 +9,15 @@ PyBry is a wrapper for the [lbry daemon](https://github.com/lbryio/lbry) and
 (Python 2 support will be added very soon)
 
 ## Installation
+
+### Using pip
+
+```bash
+$ pip install pybry
+```
+
+### Manually Cloning the Repository
+
 ```bash
 # Simply clone the repository somewhere
 $ git clone https://github.com/osilkin98/pybry
@@ -18,6 +27,10 @@ $ cd PyBRY/
 
 # Now you simply run the setup.py file:
 $ python3 setup.py install
+
+# Or if you want to auto-install all the methods for lbryd_api
+$ python3 setup.py install build_py
+
 ```
 
 And you're done!
