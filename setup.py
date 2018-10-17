@@ -1,16 +1,16 @@
-from distutils.core import setup
-from distutils.command.build_py import build_py
+from setuptools import setup
 from generator import generate_lbryd_wrapper
 from os import path
+from setuptools.command.build_py import build_py
 
 NAME = 'pybry'
-
 
 
 class generate_lbryd(build_py):
     def run(self):
         generate_lbryd_wrapper()
         build_py.run(self)
+
 
 # To read markdown file
 this_directory = path.abspath(path.dirname(__file__))
@@ -23,7 +23,7 @@ setup(
     url='https://github.com/osilkin98/pybry',
     author='Oleg Silkin',
     author_email='o.silkin98@gmail.com',
-    version='1.3',
+    version='1.3.1',
     packages=[NAME, ],
     license='MIT License',
     long_description=long_description,
