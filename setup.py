@@ -9,12 +9,6 @@ NAME = 'pybry'
 # TODO: Allow automatic installation of API files on-demand
 
 
-class generate_lbryd(build_py):
-    def run(self):
-        generate_lbryd_wrapper()
-        build_py.run(self)
-
-
 # To read markdown file
 this_directory = path.abspath(path.dirname(__file__))
 

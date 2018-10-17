@@ -28,9 +28,6 @@ $ cd PyBRY/
 # Now you simply run the setup.py file:
 $ python3 setup.py install
 
-# Or if you want to auto-install all the methods for lbryd_api
-$ python3 setup.py install build_py
-
 ```
 
 And you're done!
