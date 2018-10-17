@@ -1,5 +1,5 @@
 from setuptools import setup
-from pybry.generator import generate_lbryd_wrapper
+from pybry._generator import generate_lbryd_wrapper
 from os import path
 from setuptools.command.build_py import build_py
 
