@@ -6,6 +6,9 @@ from setuptools.command.build_py import build_py
 NAME = 'pybry'
 
 
+# TODO: Allow automatic installation of API files on-demand
+
+
 class generate_lbryd(build_py):
     def run(self):
         generate_lbryd_wrapper()
@@ -23,7 +26,7 @@ setup(
     url='https://github.com/osilkin98/pybry',
     author='Oleg Silkin',
     author_email='o.silkin98@gmail.com',
-    version='1.3.9',
+    version='1.4.0',
     packages=[NAME, ],
     license='MIT License',
     long_description=long_description,
