@@ -1,9 +1,10 @@
 from distutils.core import setup
 from distutils.command.build_py import build_py
 from generator import generate_lbryd_wrapper
-
+from os import path
 
 NAME = 'pybry'
+
 
 
 class generate_lbryd(build_py):
@@ -11,6 +12,11 @@ class generate_lbryd(build_py):
         generate_lbryd_wrapper()
         build_py.run(self)
 
+# To read markdown file
+this_directory = path.abspath(path.dirname(__file__))
+
+with open(path.join(this_directory, 'README.md'), mode='r', encoding='utf-8') as outfile:
+    long_description=outfile.read()
 
 setup(
     name='pybry',
@@ -20,7 +26,8 @@ setup(
     version='1.2.1',
     packages=[NAME, ],
     license='MIT License',
-    long_description=open('README.md', mode='r').read(),
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     python_requires='>=3',
     cmdclass={'build_py': generate_lbryd}
 
