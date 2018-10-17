@@ -20,12 +20,11 @@ setup(
     url='https://github.com/osilkin98/pybry',
     author='Oleg Silkin',
     author_email='o.silkin98@gmail.com',
-    version='1.4.0',
+    version='1.5.0',
     packages=[NAME, ],
     license='MIT License',
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='>=3',
-    cmdclass={'build_py': generate_lbryd}
 
 )
