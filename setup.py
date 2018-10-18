@@ -2,6 +2,7 @@ from setuptools import setup
 from generator import generate_lbryd_wrapper
 from os import path
 from setuptools.command.build_py import build_py
+from pybry import __version__
 
 NAME = 'pybry'
 
@@ -25,7 +26,7 @@ setup(
     url='https://github.com/osilkin98/pybry',
     author='Oleg Silkin',
     author_email='o.silkin98@gmail.com',
-    version='1.6.2',
+    version=__version__,
     py_modules=[NAME, ],
     license='MIT License',
     long_description=long_description,

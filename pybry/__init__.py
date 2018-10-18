@@ -1,5 +1,6 @@
-from .lbryd_api import LbryApi
+from .lbryd_api import LbrydApi
 from .lbrycrd_api import LbrycrdApi
+from .LBRYException import LBRYException
 
 
-__version__ = '1.0'
+__version__ = '1.6.3'
