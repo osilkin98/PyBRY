@@ -1,5 +1,3 @@
-
-
 # Defines server constants so they dont get altered by other files
 LBRYD_SERVER_ADDRESS = "http://localhost:5279"
 LBRYCRD_SERVER_ADDRESS = "http://localhost:9245"
@@ -20,3 +18,6 @@ DTYPE_MAPPING = {'list': "list",
 
 
 LBRYD_FPATH = "pybry/lbryd_api.py"
+
+# This is the hidden file that is used in pre-generation and should NOT be overwritten
+__LBRYD_BASE_FPATH__ = "pybry/__lbryd_api__.py"
