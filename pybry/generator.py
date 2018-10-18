@@ -37,7 +37,6 @@ def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
     return []
 
 
-# TODO: Break this down into smaller readable functions
 def generate_method_definition(func):
     """ Generates the body for the given function
 
