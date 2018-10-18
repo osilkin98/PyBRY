@@ -41,8 +41,10 @@ Run the `lbry-daemon` on your system so you can connect to the actual network
 
 ### Using the API
 
-Import `LbryApi` or `LbrycrdApi` from `pybry` into your project and simply use the 
-`call(method, params)` to interact with the respective API.
+0. Make sure that `lbry-daemon` is up and running, as you will not be able to 
+    do anything without it. 
+
+1. First, import `LbrydApi` or `LbrycrdApi` from `pybry` into your project.
 
 
 ### API for LBRYD
@@ -53,10 +55,10 @@ The API generates all the functions from the `lbryd` documentation, and translat
 it into tangible, documented code. 
 
 ```python
-[1] from pybry import LbryApi
+[1] from pybry import LbrydApi
 
 # Initialize the API
-[2] lbry = LbryApi()
+[2] lbry = LbrydApi()
 
 # Just call the method as documented in the LBRYD API
 [3] response = lbry.claim_list(name="bellflower")

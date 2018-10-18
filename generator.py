@@ -1,7 +1,6 @@
 from urllib.request import urlopen
 from urllib.error import URLError
 from json import loads
-from yapf.yapflib.yapf_api import FormatFile
 from pybry.constants import LBRY_API_RAW_JSON_URL
 from pybry.constants import DTYPE_MAPPING
 from pybry.constants import LBRYD_FPATH
