@@ -93,8 +93,7 @@ def generate_method_definition(func):
     # Go through each parameter and insert description & type hint
     for param in params_required + params_optional:
         # Add the type
-        method_definition += ":param " + DTYPE_MAPPING[param["type"].
-            lower()]
+        method_definition += ":param " + DTYPE_MAPPING[param["type"].lower()]
 
         # Add the name
         method_definition += " " + param["name"] + ": "
