@@ -202,5 +202,4 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPA
 
     except ImportError as IE:
         print("[Warning]: yapf is not installed, so the generated code will not follow an easy-to-read standard")
-
-
+        print(IE)

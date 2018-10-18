@@ -25,11 +25,12 @@ setup(
     url='https://github.com/osilkin98/pybry',
     author='Oleg Silkin',
     author_email='o.silkin98@gmail.com',
-    version='1.6.1',
-    packages=[NAME, ],
+    version='1.6.2',
+    py_modules=[NAME, ],
     license='MIT License',
     long_description=long_description,
     long_description_content_type='text/markdown',
+    requires=['yapf'],
     python_requires='>=3',
     cmdclass={'build_py': generate_on_build}
 
