@@ -38,25 +38,25 @@ def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
 
 
 # TODO: Break this down into smaller readable functions
-def generate_method_definition(function):
+def generate_method_definition(func):
     """ Generates the body for the given function
 
-    :param dict function: dict of a JSON-Formatted function as defined by the API docs
+    :param dict func: dict of a JSON-Formatted function as defined by the API docs
     :return: A String containing the definition for the function as it should be written in code
     :rtype: str
     """
     indent = 4
 
     # initial definition
-    method_definition = (" " * indent) + "def " + function["name"]
+    method_definition = (" " * indent) + "def " + func["name"]
 
     # Here we just create a queue and put all the parameters
     # into the queue in the order that they were given,
     params_required = [
-        param for param in function["arguments"] if param["is_required"]
+        param for param in func["arguments"] if param["is_required"]
     ]
     params_optional = [
-        param for param in function["arguments"]
+        param for param in func["arguments"]
         if not param["is_required"]
     ]
 
@@ -85,7 +85,7 @@ def generate_method_definition(function):
 
     # Begin with description.
 
-    method_definition += '"""' + function["description"]
+    method_definition += '"""' + func["description"]
 
     # re-indent
     method_definition += "\n\n" + " " * indent
@@ -108,20 +108,20 @@ def generate_method_definition(function):
 
         method_definition += " " * indent
 
-    open_index = function["returns"].find('(')
-    close_index = function["returns"].find(
+    open_index = func["returns"].find('(')
+    close_index = func["returns"].find(
         ')', (open_index if open_index > -1 else 0))
 
-    function["returns"] = function["returns"].replace("\t", " " * 4)
-    return_string = function["returns"].replace("\n", "")
+    func["returns"] = func["returns"].replace("\t", " " * 4)
+    return_string = func["returns"].replace("\n", "")
 
-    if open_index < close_index and function["returns"][
+    if open_index < close_index and func["returns"][
                                     open_index + 1:close_index] in DTYPE_MAPPING:
         method_definition += ":rtype: " + DTYPE_MAPPING[
-            function["returns"][open_index + 1:close_index]]
+            func["returns"][open_index + 1:close_index]]
 
-        function["returns"] = function["returns"].replace(
-            function["returns"][open_index:close_index + 1], "")
+        func["returns"] = func["returns"].replace(
+            func["returns"][open_index:close_index + 1], "")
 
         method_definition += "\n" + " " * indent
 
@@ -159,7 +159,7 @@ def generate_method_definition(function):
 
     method_definition += '}\n\n' + ' ' * indent
 
-    method_definition += "return self.make_request(SERVER_ADDRESS, '" + function["name"] + "', " \
+    method_definition += "return self.make_request(SERVER_ADDRESS, '" + func["name"] + "', " \
                          + params_map.rstrip(" = {") + ", timeout=self.timeout)\n\n"
 
     return method_definition
