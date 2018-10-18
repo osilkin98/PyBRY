@@ -29,6 +29,7 @@ setup(
     version=__version__,
     py_modules=[NAME, ],
     license='MIT License',
+    description="A Binded Python API for the LBRYD and LBRYCRD network",
     long_description=long_description,
     long_description_content_type='text/markdown',
     requires=['yapf'],
