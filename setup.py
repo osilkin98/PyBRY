@@ -8,6 +8,9 @@ NAME = 'pybry'
 
 # TODO: Allow automatic installation of API files on-demand
 
+class generate_on_build()
+
+
 
 # To read markdown file
 this_directory = path.abspath(path.dirname(__file__))
@@ -20,7 +23,7 @@ setup(
     url='https://github.com/osilkin98/pybry',
     author='Oleg Silkin',
     author_email='o.silkin98@gmail.com',
-    version='1.5.0',
+    version='1.5.1',
     packages=[NAME, ],
     license='MIT License',
     long_description=long_description,
