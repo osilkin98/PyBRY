@@ -194,5 +194,13 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPA
             # Write to file
             lbry_file.write(method_definition)
 
-    # Now we should format the file using the yapf formatter
-    FormatFile(write_file, in_place=True)
+    try:
+        from yapf.yapflib.yapf_api import FormatFile
+
+        # Now we should format the file using the yapf formatter
+        FormatFile(write_file, in_place=True)
+
+    except ImportError as IE:
+        print("[Warning]: yapf is not installed, so the generated code will not follow an easy-to-read standard")
+
+
