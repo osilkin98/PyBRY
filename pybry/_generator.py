@@ -1,7 +1,11 @@
 from urllib.request import urlopen
 from urllib.error import URLError
 from json import loads
-from pybry.constants import LBRY_API_RAW_JSON_URL, DTYPE_MAPPING, LBRYD_FPATH
+from yapf.yapflib.yapf_api import FormatFile
+from pybry.constants import LBRY_API_RAW_JSON_URL
+from pybry.constants import DTYPE_MAPPING
+from pybry.constants import LBRYD_FPATH
+from pybry.constants import __LBRYD_BASE_FPATH__
 
 
 def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
@@ -158,20 +162,32 @@ def generate_method_definition(function):
     method_definition += "return self.make_request(SERVER_ADDRESS, '" + function["name"] + "', " \
                          + params_map.rstrip(" = {") + ", timeout=self.timeout)\n\n"
 
+    return method_definition
+
 
 # Currently this only supports LBRYD, as LBRYCRD's API is is nowhere to be found,
 # Therefore anyone wanting to use that needs to call the functions manually.
-def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, fpath=LBRYD_FPATH):
+def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPATH__, write_file=LBRYD_FPATH):
     """ Generates the actual functions for lbryd_api.py based on lbry's documentation
 
     :param str url: URL to the documentation we need to obtain,
      pybry.constants.LBRY_API_RAW_JSON_URL by default
-    :param str fpath: "Path from project root to the file we'll be writing to.
+    :param str read_file: This is the path to the file from which we will be reading
+    :param str write_file: Path from project root to the file we'll be writing to.
      """
+
     functions = get_lbry_api_function_docs(url)
 
     # Open the actual file for appending
-    with open(fpath, 'a') as lbry_file:
+    with open(write_file, 'w') as lbry_file:
+
+        lbry_file.write("# This file was generated at build time using the generator function\n")
+        lbry_file.write("# You may edit but do so with caution\n")
+
+        with open(read_file, 'r') as template:
+            header = template.read()
+
+        lbry_file.write(header)
 
         # Iterate through all the functions we retrieved
         for func in functions:
@@ -180,3 +196,6 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, fpath=LBRYD_FPATH):
 
             # Write to file
             lbry_file.write(method_definition)
+
+    # Now we should format the file using the yapf formatter
+    FormatFile(write_file, in_place=True)

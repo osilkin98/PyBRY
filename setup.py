@@ -6,10 +6,12 @@ from setuptools.command.build_py import build_py
 NAME = 'pybry'
 
 
-# TODO: Allow automatic installation of API files on-demand
+class generate_on_build(build_py):
+    """ Generates the actual file for release at build time """
 
-class generate_on_build()
-
+    def run(self):
+        generate_lbryd_wrapper()
+        build_py.run(self)
 
 
 # To read markdown file
@@ -23,11 +25,12 @@ setup(
     url='https://github.com/osilkin98/pybry',
     author='Oleg Silkin',
     author_email='o.silkin98@gmail.com',
-    version='1.5.1',
+    version='1.5.2',
     packages=[NAME, ],
     license='MIT License',
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='>=3',
+    cmdclass={'build_py': generate_on_build}
 
 )
