@@ -35,23 +35,61 @@ And you're done!
 
 ## Usage
 
+### Connecting to the Network
+
+Run the `lbry-daemon` on your system so you can connect to the actual network
+
+### Using the API
+
 Import `LbryApi` or `LbrycrdApi` from `pybry` into your project and simply use the 
 `call(method, params)` to interact with the respective API.
 
 
-For Normal Lbry:
+### API for LBRYD
+
+#### Using the Generated Code
+
+The API generates all the functions from the `lbryd` documentation, and translates
+it into tangible, documented code. 
 
 ```python
-from pybry import LbryApi
+[1] from pybry import LbryApi
 
 # Initialize the API
-lbry = LbryApi()
+[2] lbry = LbryApi()
 
-# Call the method you want as a str
-response = lbry.call("claim_list", {"name": "bellflower"})
+# Just call the method as documented in the LBRYD API
+[3] response = lbry.claim_list(name="bellflower")
 ```
 
-For Lbrycrd:
+Since all the code is properly documented, if you ask for its documentation in an IDE,
+or if you go to read it for yourself, it'll appear like this:
+
+```python
+[4] response = lbry.account_balance()
+
+    Return the balance of an account
+    Params:
+    account_id – If provided only the balance for this account will be given (Optional)
+    address – If provided only the balance for this address will be given (Optional)
+    include_unconfirmed – Include unconfirmed (Optional)
+    Returns:
+    (decimal) amount of lbry credits in wallet(decimal) amount of lbry credits in wallet
+
+```
+#### Calling the API Manually
+Since all the code does is make requests to the lbry daemon, you can also 
+use it as you would with cURL on the commandline. In fact, this is 
+actually what the bodies of generated code do. 
+```python
+# You can also use the traditional method of making requests 
+# if you prefer the cURL commandline syntax, works the same.
+response = lbry.call("claim_list", {"name": "bellflower"})
+
+```
+
+
+### API For LbryCRD
 ```python
 from pybry import LbrycrdApi
 
@@ -62,17 +100,4 @@ lbrycrd = LbrycrdApi("username", "password")
 response = lbrycrd.call("wallet_unlock", {"wallet_username", "wallet_password"})
 
 ```
-*Note: You have to have the `lbry-daemon` running in the background to use these, simply execute those and 
-you'll be able to make requests efficiently.
 
-## Future: Code Generation
-Code generation for `lbryd_api` is a feature that is ready to be implemented,
- (in the [`generator.py`](pybry/_generator.py) file).
-However the file itself cannot be used to generate working code due to to a couple of flaws in the actual
-[documentation file](https://github.com/lbryio/lbry/blob/master/docs/api.json) as 
-documented [here](https://github.com/lbryio/lbry/pull/1469). 
-
-If you would like to use it so you can have
-proper function names and parameters for your code, you may do so. Simply run 
-`$ python setup.py build_py` and then delete all instances of `<amount>` and `<file_name>` found in 
-your `lbryd_api.py` file. Then you're done!
