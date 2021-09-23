@@ -104,29 +104,29 @@ def generate_method_definition(func):
             "is_required"] else " (Optional)\n"
 
         method_definition += " " * indent
-
-    open_index = func["returns"].find('(')
-    close_index = func["returns"].find(
-        ')', (open_index if open_index > -1 else 0))
-
-    func["returns"] = func["returns"].replace("\t", " " * 4)
-    return_string = func["returns"].replace("\n", "")
-
-    if open_index < close_index and func["returns"][
-                                    open_index + 1:close_index] in DTYPE_MAPPING:
-        method_definition += ":rtype: " + DTYPE_MAPPING[
-            func["returns"][open_index + 1:close_index]]
-
-        func["returns"] = func["returns"].replace(
-            func["returns"][open_index:close_index + 1], "")
-
-        method_definition += "\n" + " " * indent
-
-    method_definition += ":return: " + return_string
-
-    for i in range(0, len(return_string) + 1, 80 - (indent + 2)):
-        method_definition += return_string[i:i + (
-                80 - (indent + 2))] + "\n" + " " * indent
+    # Do not parse the returns because it doesn't work correctly at the moment
+#    open_index = func["returns"].find('(')
+#    close_index = func["returns"].find(
+#        ')', (open_index if open_index > -1 else 0))
+#
+#    func["returns"] = func["returns"].replace("\t", " " * 4)
+#    return_string = func["returns"].replace("\n", "")
+#
+#    if open_index < close_index and func["returns"][
+#                                    open_index + 1:close_index] in DTYPE_MAPPING:
+#        method_definition += ":rtype: " + DTYPE_MAPPING[
+#            func["returns"][open_index + 1:close_index]]
+#
+#        func["returns"] = func["returns"].replace(
+#            func["returns"][open_index:close_index + 1], "")
+#
+#        method_definition += "\n" + " " * indent
+#
+#    method_definition += ":return: " + return_string
+#
+#    for i in range(0, len(return_string) + 1, 80 - (indent + 2)):
+#        method_definition += return_string[i:i + (
+#                80 - (indent + 2))] + "\n" + " " * indent
 
     # Close it off & reindent
     method_definition += '"""' + "\n" + " " * indent
