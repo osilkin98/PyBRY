@@ -173,7 +173,7 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPA
     :param str write_file: Path from project root to the file we'll be writing to.
      """
 
-    functions = get_lbry_api_function_docs(url)
+    sections = get_lbry_api_function_docs(url)
 
     # Open the actual file for appending
     with open(write_file, 'w') as lbry_file:
@@ -187,12 +187,14 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPA
         lbry_file.write(header)
 
         # Iterate through all the functions we retrieved
-        for func in functions:
+        for section in sections:
+            commands = sections[section]["commands"]
 
-            method_definition = generate_method_definition(func)
+            for command in commands:
+                method_definition = generate_method_definition(command)
 
-            # Write to file
-            lbry_file.write(method_definition)
+                # Write to file
+                lbry_file.write(method_definition)
 
     try:
         from yapf.yapflib.yapf_api import FormatFile
