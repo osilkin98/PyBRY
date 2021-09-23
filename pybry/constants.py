@@ -11,7 +11,11 @@ DTYPE_MAPPING = {'list': "list",
                  'bool': "bool",
                  'int': "int",
                  'dict': "dict",
-                 'str': "str"}
+                 'str': "str",
+                 'string': "str",
+                 'str, list': "list",
+                 'str or list': "list",
+                 'date': "str"}
 
 # LBRYCRD documentation doesn't exist at least that I could find
 # LBRYCRD_API_RAW_JSON_URL = ""
