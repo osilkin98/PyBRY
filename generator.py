@@ -1,3 +1,4 @@
+import ast
 from urllib.request import urlopen
 from urllib.error import URLError
 from json import loads
@@ -196,12 +197,30 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPA
                 # Write to file
                 lbry_file.write(method_definition)
 
+    print("Generated file:", write_file)
+    with open(write_file) as lbry_file:
+        source = lbry_file.read()
+
+    parsed = True
     try:
-        from yapf.yapflib.yapf_api import FormatFile
+        result = ast.parse(source, filename=write_file)
+    except SyntaxError as err:
+        print("The resulting file has syntax errors. Look at the error line for clues.")
+        print("Error:", err)
+        print()
+        print("The problem is usually in the input JSON file; it may contain badly formatted fields.")
+        print("Input:", url)
+        print()
+        parsed = False
 
-        # Now we should format the file using the yapf formatter
-        FormatFile(write_file, in_place=True)
+    if parsed:
+        try:
+            from yapf.yapflib.yapf_api import FormatFile
 
-    except ImportError as IE:
-        print("[Warning]: yapf is not installed, so the generated code will not follow an easy-to-read standard")
-        print(IE)
+            # Now we should format the file using the yapf formatter
+            FormatFile(write_file, in_place=True)
+
+        except ImportError:
+            print()
+            print("[Warning]: 'yapf' could not be imported, so the generated code will not be formatted")
+
