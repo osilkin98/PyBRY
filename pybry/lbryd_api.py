@@ -6,16 +6,23 @@ class LbrydApi(BaseApi):
 
     def __init__(self, timeout=600):
         """
+        LBRY daemon wrapper.
+
+        Initialize this class, and use its methods.
+        >>> lbry = LbrydApi()
+        >>> response = lbry.claim_search(name='LBRYPlaylists')
+
         :param float timeout: The number of seconds to wait for a connection until we time out
         """
         self.timeout = timeout
 
     @classmethod
     def call(cls, method, params=None, timeout=600):
-        """ Makes a Call to the LBRY API
+        """Makes a call to the LBRY API.
 
         :param str method: Method to call from the LBRY API. See the full list of methods at
-         https://lbryio.github.io/lbry/cli/
+         https://github.com/lbryio/lbry-sdk/blob/master/lbry/extras/daemon/daemon.py
+         The daemon methods start with the string `jsonrpc_`
         :param dict params: Parameters to give the method selected
         :param float timeout: The number of seconds to wait for a connection until we time out; 600 By Default.
         :raises LBRYException: If the request returns an error when calling the API
