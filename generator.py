@@ -8,7 +8,7 @@ from pybry.constants import LBRYD_FPATH
 from pybry.constants import __LBRYD_BASE_FPATH__
 
 
-def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
+def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL, doc=None):
     """ Scrapes the given URL to a page in JSON format to obtain the documentation for the LBRY API
 
     :param str url: URL to the documentation we need to obtain,
@@ -18,21 +18,26 @@ def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL):
     """
 
     try:
-        # Grab the page content
-        docs_page = urlopen(url)
+        if doc:
+            with open(doc, "r") as api_file:
+                contents = api_file.read()
+        else:
+            # Grab the page content
+            docs_page = urlopen(url)
 
-        # Read the contents of the actual url we grabbed and decode them into UTF-8
-        contents = docs_page.read().decode("utf-8")
+            # Read the contents of the actual url we grabbed and decode them into UTF-8
+            contents = docs_page.read().decode("utf-8")
 
         # Return the contents loaded as JSON
         return loads(contents)
 
         # If we get an exception, simply exit
-    except URLError as UE:
-        print(UE)
-
-    except Exception as E:
-        print(E)
+    except URLError as err:
+        print(f"Cannot open URL for reading; {err} '{url}'")
+    except (FileNotFoundError, PermissionError) as err:
+        print(f"Cannot open file for reading; {err}")
+    except Exception as err:
+        print(f"{err}, url='{url}', doc='{doc}'")
 
     return []
 
@@ -165,7 +170,7 @@ def generate_method_definition(func):
 
 # Currently this only supports LBRYD, as LBRYCRD's API is is nowhere to be found,
 # Therefore anyone wanting to use that needs to call the functions manually.
-def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPATH__, write_file=LBRYD_FPATH):
+def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, doc=None, read_file=__LBRYD_BASE_FPATH__, write_file=LBRYD_FPATH):
     """ Generates the actual functions for lbryd_api.py based on lbry's documentation
 
     :param str url: URL to the documentation we need to obtain,
@@ -173,14 +178,34 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPA
     :param str read_file: This is the path to the file from which we will be reading
     :param str write_file: Path from project root to the file we'll be writing to.
      """
+    if doc:
+        sections = get_lbry_api_function_docs(doc=doc)
+        inpt = doc
+    else:
+        sections = get_lbry_api_function_docs(url=url)
+        inpt = url
 
-    sections = get_lbry_api_function_docs(url)
+    if not sections:
+        print("Empty information; wrapper module not written.")
+        return True
+
+    print("Input:", inpt)
 
     # Open the actual file for appending
     with open(write_file, 'w') as lbry_file:
+        docstring = ['"""',
+                     'LBRY daemon wrapper in Python. Import it and initialize the main class.',
+                     '',
+                     'This file was generated at build time using the `generator` module.',
+                     'You may edit it but do so with caution.',
+                     'If this file contains syntax errors, check the input file',
+                     'for badly formated fields.',
+                     f'Input: {inpt}',
+                     '"""',
+                     '']
 
-        lbry_file.write("# This file was generated at build time using the generator function\n")
-        lbry_file.write("# You may edit but do so with caution\n")
+        docstring = "\n".join(docstring)
+        lbry_file.write(docstring)
 
         with open(read_file, 'r') as template:
             header = template.read()
@@ -188,16 +213,15 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPA
         lbry_file.write(header)
 
         # Iterate through all the functions we retrieved
+        # and write them to the file
         for section in sections:
             commands = sections[section]["commands"]
 
             for command in commands:
                 method_definition = generate_method_definition(command)
-
-                # Write to file
                 lbry_file.write(method_definition)
 
-    print("Generated file:", write_file)
+    print("Generated API wrapper:", write_file)
     with open(write_file) as lbry_file:
         source = lbry_file.read()
 
@@ -209,18 +233,17 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, read_file=__LBRYD_BASE_FPA
         print("Error:", err)
         print()
         print("The problem is usually in the input JSON file; it may contain badly formatted fields.")
-        print("Input:", url)
+        print("Input:", inpt)
         print()
         parsed = False
 
     if parsed:
         try:
             from yapf.yapflib.yapf_api import FormatFile
-
-            # Now we should format the file using the yapf formatter
             FormatFile(write_file, in_place=True)
-
         except ImportError:
             print()
             print("[Warning]: 'yapf' could not be imported, so the generated code will not be formatted")
+
+    return None
 
