@@ -1,4 +1,5 @@
 import ast
+import sys
 from urllib.request import urlopen
 from urllib.error import URLError
 from json import loads
@@ -246,4 +247,13 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, doc=None, read_file=__LBRY
             print("[Warning]: 'yapf' could not be imported, so the generated code will not be formatted")
 
     return None
+
+
+def main(argv=None):
+    doc = argv[1] if len(argv) > 1 else None
+    generate_lbryd_wrapper(doc=doc)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
 
