@@ -40,7 +40,7 @@ with open(path.join(this_directory, 'README.md'), mode='r', encoding='utf-8') as
 
 setup(
     name=NAME,
-    url='https://github.com/belikor/PyBRY',
+    url='https://github.com/osilkin98/PyBRY',
     author='Oleg Silkin, Beliko R',
     author_email='o.silkin98@gmail.com',
     version=__version__,

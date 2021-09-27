@@ -18,7 +18,7 @@ The `lbrycrd` blockchain can be downloaded from the
 
 Clone the repository into a user-writeable directory:
 ```bash
-git clone https://github.com/belikor/PyBRY
+git clone https://github.com/osilkin98/PyBRY
 ```
 
 ### Make
