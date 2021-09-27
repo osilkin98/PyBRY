@@ -2,7 +2,7 @@ from pybry.base_api import BaseApi
 from pybry.constants import LBRYD_SERVER_ADDRESS as SERVER_ADDRESS
 
 
-class LbryApi(BaseApi):
+class LbrydApi(BaseApi):
 
     def __init__(self, timeout=600):
         """
