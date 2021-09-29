@@ -5,6 +5,8 @@ like `Makefile` or `setuptools`.
 """
 import ast
 import json
+import os
+import shutil
 import sys
 import urllib.request
 import urllib.error
@@ -256,11 +258,46 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL,
     return None
 
 
+def generate_basic_modules(template_dir="pybry", out_dir="pybry"):
+    """Generate the static modules in the final package directory.
+
+    These are simply copied over from the template directory.
+    """
+    print(80 * "-")
+    print("Package:", out_dir)
+
+    basic_modules = ["__init__.py",
+                     "constants.py",
+                     "base_api.py",
+                     "LBRYException.py"]
+
+    if not os.path.exists(out_dir):
+        os.mkdir(out_dir)
+
+    installed = []
+    for module in basic_modules:
+        in_file = os.path.join(template_dir, module)
+
+        if module == "__init__.py":
+            module = "__init__.py"
+
+        out_file = os.path.join(out_dir, module)
+        try:
+            shutil.copy(in_file, out_file)
+        except (FileNotFoundError, shutil.SameFileError) as err:
+            print(err)
+        installed.append("- " + out_file)
+
+    print("Basic modules:")
+    print("\n".join(installed))
+
+
 def main(argv=None):
     if argv and isinstance(argv, (list, tuple)):
         doc = argv[1] if len(argv) > 1 else None
     else:
         doc = None
+    generate_basic_modules()
     generate_lbryd_wrapper(doc=doc)
 
 
