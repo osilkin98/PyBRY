@@ -10,10 +10,12 @@ import shutil
 import sys
 import urllib.request
 import urllib.error
-from pybry.constants import (LBRY_API_RAW_JSON_URL,
-                             DTYPE_MAPPING,
-                             __LBRYD_BASE_FPATH__,
-                             LBRYD_FPATH)
+from template.constants import (LBRY_API_RAW_JSON_URL,
+                                TEMPLATE_DIR,
+                                PKG_DIR,
+                                LBRYD_BASE_FPATH,
+                                LBRYD_FPATH,
+                                DTYPE_MAPPING)
 
 
 def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL, doc=None):
@@ -177,7 +179,7 @@ def generate_method_definition(func):
 
 def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL,
                            doc=None,
-                           read_file=__LBRYD_BASE_FPATH__,
+                           read_file=LBRYD_BASE_FPATH,
                            write_file=LBRYD_FPATH):
     """Generates the wrapper for the lbrynet daemon.
 
@@ -258,7 +260,7 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL,
     return None
 
 
-def generate_basic_modules(template_dir="pybry", out_dir="pybry"):
+def generate_basic_modules(template_dir=TEMPLATE_DIR, out_dir=PKG_DIR):
     """Generate the static modules in the final package directory.
 
     These are simply copied over from the template directory.
@@ -266,10 +268,10 @@ def generate_basic_modules(template_dir="pybry", out_dir="pybry"):
     print(80 * "-")
     print("Package:", out_dir)
 
-    basic_modules = ["__init__.py",
+    basic_modules = ["_init.py",
                      "constants.py",
                      "base_api.py",
-                     "LBRYException.py"]
+                     "exception.py"]
 
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
@@ -278,7 +280,7 @@ def generate_basic_modules(template_dir="pybry", out_dir="pybry"):
     for module in basic_modules:
         in_file = os.path.join(template_dir, module)
 
-        if module == "__init__.py":
+        if module == "_init.py":
             module = "__init__.py"
 
         out_file = os.path.join(out_dir, module)
