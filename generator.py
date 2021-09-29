@@ -15,6 +15,8 @@ from template.constants import (LBRY_API_RAW_JSON_URL,
                                 PKG_DIR,
                                 LBRYD_BASE_FPATH,
                                 LBRYD_FPATH,
+                                LBRYCRD_BASE_FPATH,
+                                LBRYCRD_FPATH,
                                 DTYPE_MAPPING)
 
 
@@ -260,6 +262,36 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL,
     return None
 
 
+def generate_lbrycrd_wrapper(read_file=LBRYCRD_BASE_FPATH,
+                             write_file=LBRYCRD_FPATH):
+    """Generate wrapper for the lbrycrd daemon.
+
+    At the moment there is no JSON file that describes the API of `lbrycrd`,
+    therefore the wrapper is just a copy of the template, that is placed
+    in the final package location.
+    """
+    print(80 * "-")
+    print("Input JSON:", None)
+
+    with open(write_file, "w") as lbrycrd_file:
+        docstring = ['"""',
+                     'LBRYCRD daemon wrapper in Python. Import it an initialize the main class.',
+                     '',
+                     'This file was generated at build time using the `generator` module.',
+                     '"""',
+                     '']
+
+        docstring = "\n".join(docstring)
+        lbrycrd_file.write(docstring)
+
+        with open(read_file, "r") as template:
+            header = template.read()
+
+        lbrycrd_file.write(header)
+
+    print("Generated 'lbrycrd' API wrapper:", write_file)
+
+
 def generate_basic_modules(template_dir=TEMPLATE_DIR, out_dir=PKG_DIR):
     """Generate the static modules in the final package directory.
 
@@ -300,6 +332,7 @@ def main(argv=None):
     else:
         doc = None
     generate_basic_modules()
+    generate_lbrycrd_wrapper()
     generate_lbryd_wrapper(doc=doc)
 
 
