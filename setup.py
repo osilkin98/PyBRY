@@ -1,20 +1,21 @@
+import os
 from setuptools import setup
-from generator import generate_lbryd_wrapper
-from os import path
 from setuptools.command.build_py import build_py
 # This should be replaced by setuptools as distutils is deprecated
 from distutils.command.clean import clean
-from distutils.file_util import copy_file
-from pybry import __version__
+from distutils.dir_util import remove_tree
 
-NAME = 'pybry'
+import generator
+from template.constants import __version__
+from template.constants import NAME
 
 
 class GenerateAPILocalJSON(build_py):
     """Generates the API from the local JSON file."""
 
     def run(self):
-        generate_lbryd_wrapper(doc="docs/api.json")
+        argv = ["generator", "docs/api.json"]
+        generator.main(argv)
         build_py.run(self)
 
 
@@ -22,20 +23,21 @@ class GenerateAPIURLJSON(build_py):
     """Generates the API from the JSON file in the online repository."""
 
     def run(self):
-        generate_lbryd_wrapper()
+        generator.main(None)
         build_py.run(self)
 
 
 class Clean(clean):
     def run(self):
-        copy_file("pybry/__lbryd_api__.py", "pybry/lbryd_api.py")
+        if os.path.exists(NAME):
+            remove_tree(NAME)
         clean.run(self)
 
 
 # To read markdown file
-this_directory = path.abspath(path.dirname(__file__))
+this_directory = os.path.abspath(os.path.dirname(__file__))
 
-with open(path.join(this_directory, 'README.md'), mode='r', encoding='utf-8') as outfile:
+with open(os.path.join(this_directory, 'README.md'), 'r') as outfile:
     long_description = outfile.read()
 
 setup(
