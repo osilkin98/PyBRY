@@ -5,7 +5,7 @@ and they will also be used inside the wrappers.
 """
 import os
 
-__version__ = "2.1.0"
+__version__ = "2.2.0"
 
 # This is the URL for the online `lbrynet` API documentation
 LBRY_API_RAW_JSON_URL = "https://raw.githubusercontent.com/lbryio/lbry/master/docs/api.json"
