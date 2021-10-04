@@ -6,10 +6,8 @@ Initialize the class, and use its methods.
 >>> lbry = pybry.LbrydApi()
 >>> response = lbry.claim_search(name='LBRYPlaylists')
 """
+from .constants import __version__
 from .lbryd_api import LbrydApi
 from .lbrycrd_api import LbrycrdApi
-from .LBRYException import LBRYException
-
-
-__version__ = '2.1.0'
+from .exception import LBRYError
 

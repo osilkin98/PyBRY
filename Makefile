@@ -20,6 +20,6 @@ build_online:
 	$(PY) generator.py
 
 clean:
-	cp "pybry/__lbryd_api__.py" "pybry/lbryd_api.py"
 	-rm -rf "build/"
+	-rm -rf "pybry/"
 

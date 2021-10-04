@@ -1,39 +1,49 @@
+"""Module to generate the API wrappers for lbrynet and lbrycrd.
+
+This module can be executed directly or called from a building system
+like `Makefile` or `setuptools`.
+"""
 import ast
+import json
+import os
+import shutil
 import sys
-from urllib.request import urlopen
-from urllib.error import URLError
-from json import loads
-from pybry.constants import LBRY_API_RAW_JSON_URL
-from pybry.constants import DTYPE_MAPPING
-from pybry.constants import LBRYD_FPATH
-from pybry.constants import __LBRYD_BASE_FPATH__
+import urllib.request
+import urllib.error
+from template.constants import (LBRY_API_RAW_JSON_URL,
+                                TEMPLATE_DIR,
+                                PKG_DIR,
+                                LBRYD_BASE_FPATH,
+                                LBRYD_FPATH,
+                                LBRYCRD_BASE_FPATH,
+                                LBRYCRD_FPATH,
+                                DTYPE_MAPPING)
 
 
 def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL, doc=None):
-    """ Scrapes the given URL to a page in JSON format to obtain the documentation for the LBRY API
+    """Scrapes the given input in JSON format to obtain the lbrynet API.
 
     :param str url: URL to the documentation we need to obtain,
      pybry.constants.LBRY_API_RAW_JSON_URL by default
     :return: List of functions retrieved from the `url` given
     :rtype: list
     """
-
     try:
         if doc:
             with open(doc, "r") as api_file:
                 contents = api_file.read()
         else:
             # Grab the page content
-            docs_page = urlopen(url)
+            docs_page = urllib.request.urlopen(url)
 
             # Read the contents of the actual url we grabbed and decode them into UTF-8
             contents = docs_page.read().decode("utf-8")
 
         # Return the contents loaded as JSON
-        return loads(contents)
+        return json.loads(contents)
 
         # If we get an exception, simply exit
-    except URLError as err:
+    except urllib.error.URLError as err:
         print(f"Cannot open URL for reading; {err} '{url}'")
     except (FileNotFoundError, PermissionError) as err:
         print(f"Cannot open file for reading; {err}")
@@ -44,7 +54,7 @@ def get_lbry_api_function_docs(url=LBRY_API_RAW_JSON_URL, doc=None):
 
 
 def generate_method_definition(func):
-    """ Generates the body for the given function
+    """Generates the body for the given function.
 
     :param dict func: dict of a JSON-Formatted function as defined by the API docs
     :return: A String containing the definition for the function as it should be written in code
@@ -169,16 +179,19 @@ def generate_method_definition(func):
     return method_definition
 
 
-# Currently this only supports LBRYD, as LBRYCRD's API is is nowhere to be found,
-# Therefore anyone wanting to use that needs to call the functions manually.
-def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, doc=None, read_file=__LBRYD_BASE_FPATH__, write_file=LBRYD_FPATH):
-    """ Generates the actual functions for lbryd_api.py based on lbry's documentation
+def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL,
+                           doc=None,
+                           read_file=LBRYD_BASE_FPATH,
+                           write_file=LBRYD_FPATH):
+    """Generates the wrapper for the lbrynet daemon.
 
     :param str url: URL to the documentation we need to obtain,
      pybry.constants.LBRY_API_RAW_JSON_URL by default
     :param str read_file: This is the path to the file from which we will be reading
     :param str write_file: Path from project root to the file we'll be writing to.
-     """
+    """
+    print(80 * "-")
+
     if doc:
         sections = get_lbry_api_function_docs(doc=doc)
         inpt = doc
@@ -190,7 +203,7 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, doc=None, read_file=__LBRY
         print("Empty information; wrapper module not written.")
         return True
 
-    print("Input:", inpt)
+    print("Input JSON:", inpt)
 
     # Open the actual file for appending
     with open(write_file, 'w') as lbry_file:
@@ -201,7 +214,7 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, doc=None, read_file=__LBRY
                      'You may edit it but do so with caution.',
                      'If this file contains syntax errors, check the input file',
                      'for badly formated fields.',
-                     f'Input: {inpt}',
+                     f'Input JSON: {inpt}',
                      '"""',
                      '']
 
@@ -222,7 +235,7 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, doc=None, read_file=__LBRY
                 method_definition = generate_method_definition(command)
                 lbry_file.write(method_definition)
 
-    print("Generated API wrapper:", write_file)
+    print("Generated 'lbrynet' API wrapper:", write_file)
     with open(write_file) as lbry_file:
         source = lbry_file.read()
 
@@ -249,8 +262,77 @@ def generate_lbryd_wrapper(url=LBRY_API_RAW_JSON_URL, doc=None, read_file=__LBRY
     return None
 
 
+def generate_lbrycrd_wrapper(read_file=LBRYCRD_BASE_FPATH,
+                             write_file=LBRYCRD_FPATH):
+    """Generate wrapper for the lbrycrd daemon.
+
+    At the moment there is no JSON file that describes the API of `lbrycrd`,
+    therefore the wrapper is just a copy of the template, that is placed
+    in the final package location.
+    """
+    print(80 * "-")
+    print("Input JSON:", None)
+
+    with open(write_file, "w") as lbrycrd_file:
+        docstring = ['"""',
+                     'LBRYCRD daemon wrapper in Python. Import it an initialize the main class.',
+                     '',
+                     'This file was generated at build time using the `generator` module.',
+                     '"""',
+                     '']
+
+        docstring = "\n".join(docstring)
+        lbrycrd_file.write(docstring)
+
+        with open(read_file, "r") as template:
+            header = template.read()
+
+        lbrycrd_file.write(header)
+
+    print("Generated 'lbrycrd' API wrapper:", write_file)
+
+
+def generate_basic_modules(template_dir=TEMPLATE_DIR, out_dir=PKG_DIR):
+    """Generate the static modules in the final package directory.
+
+    These are simply copied over from the template directory.
+    """
+    print(80 * "-")
+    print("Package:", out_dir)
+
+    basic_modules = ["_init.py",
+                     "constants.py",
+                     "base_api.py",
+                     "exception.py"]
+
+    if not os.path.exists(out_dir):
+        os.mkdir(out_dir)
+
+    installed = []
+    for module in basic_modules:
+        in_file = os.path.join(template_dir, module)
+
+        if module == "_init.py":
+            module = "__init__.py"
+
+        out_file = os.path.join(out_dir, module)
+        try:
+            shutil.copy(in_file, out_file)
+        except (FileNotFoundError, shutil.SameFileError) as err:
+            print(err)
+        installed.append("- " + out_file)
+
+    print("Basic modules:")
+    print("\n".join(installed))
+
+
 def main(argv=None):
-    doc = argv[1] if len(argv) > 1 else None
+    if argv and isinstance(argv, (list, tuple)):
+        doc = argv[1] if len(argv) > 1 else None
+    else:
+        doc = None
+    generate_basic_modules()
+    generate_lbrycrd_wrapper()
     generate_lbryd_wrapper(doc=doc)
 
 

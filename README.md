@@ -29,9 +29,13 @@ cd PyBRY/
 make
 ```
 
-The generated API wrapper will be written to `pybry/lbryd_api.py`.
+The generated API wrapper will be composed of the newly created `pybry/`
+directory, and the files contained in there.
+The entire directory is a Python package which can be installed
+in the Python path.
 
-By default the API wrapper is created from the included `docs/api.json` file.
+By default the `lbrynet` API wrapper is created from the files
+in the `template/` directory, and the `docs/api.json` file.
 These are equivalent:
 ```sh
 make
@@ -57,7 +61,13 @@ make
 
 Read the [docs/README.md](./docs) file for more information.
 
-To use the new wrapper code, copy the [`pybry/`](./pybry) directory,
+In contrast to the `lbrynet` wrapper, the `lbrycrd` API wrapper
+is not created from any JSON file, as at the moment (2021)
+there is no JSON document describing all methods from `lbrycrd`.
+This wrapper is mostly a copy from its template in the `template/`
+directory.
+
+To use the new wrapper code, copy the `pybry/` directory,
 and place it inside a `site-packages` directory that is searched by Python.
 This can be in the user's home directory,
 ```
@@ -78,17 +88,16 @@ PYTHONPATH=/opt/git/PyBRY:$PYTHONPATH
 
 ### Setuptools
 
-Insted of using the `Makefile`, we can use `setuptools` as well:
-```
+Instead of using the `Makefile`, we can use `setuptools` as well:
+```sh
 python3 setup.py build_local
 python3 setup.py build_online
 python3 setup.py clean
+python3 setup.py clean --all
 ```
 
-However, since `setup.py` imports `pybry`, and this imports
-the existing `lbryd_api.py`, the entire `setup.py` may fail
-on import if `lbryd_api.py` has syntax errors.
-For this reason, using the `Makefile` is preferred.
+Normally `setuptools` will create a `build/` directory where a copy
+of the package will be placed.
 
 ### Older installation
 
@@ -101,7 +110,7 @@ pip install --user pybry
 ## Usage
 
 ### API for lbrynet
-
+ 
 Make sure the `lbrynet` daemon is running either by launching
 the full LBRY Desktop application, or by starting the console `lbrynet`
 program.
@@ -119,7 +128,9 @@ which have the same name and arguments as described in the documentation.
 ```py
 import pybry
 lbry = pybry.LbrydApi()
-response = lbry.claim_search(name="LBRYPlaylists")
+response1 = lbry.claim_search(name="LBRYPlaylists")
+response2 = lbry.support_list()
+response3 = lbry.file_list(sort="claim_name", reverse=True)
 ```
 
 Since the code is properly documented, if you ask for its documentation
